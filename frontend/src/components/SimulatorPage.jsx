@@ -187,7 +187,7 @@ function SimPoleNode({ poleId, state, isGrid }) {
 // ════════════════════════════════════════════════════════════
 //  MAIN SIMULATOR PAGE COMPONENT
 // ════════════════════════════════════════════════════════════
-function SimulatorPage() {
+function SimulatorPage({ socket }) {
     const [poleStates, setPoleStates] = useState({
         Pole1: null, Pole2: null, Pole3: null, Pole4: null,
     });
@@ -196,53 +196,72 @@ function SimulatorPage() {
     });
     const [eventLog, setEventLog] = useState([]);
     const [sending, setSending] = useState(false);
-    const [connected, setConnected] = useState(false);
-    const socketRef = useRef(null);
+    const [connected, setConnected] = useState(socket?.connected || false);
 
     // ─── WebSocket Setup ─────────────────────────────────────
     useEffect(() => {
-        const socket = io(BACKEND_URL, {
-            transports: ['websocket', 'polling'],
-            reconnectionAttempts: Infinity,
-            reconnectionDelay: 2000,
-        });
-        socketRef.current = socket;
+        if (!socket) return;
 
-        socket.on('connect', () => setConnected(true));
-        socket.on('disconnect', () => setConnected(false));
+        const onConnect = () => setConnected(true);
+        const onDisconnect = () => setConnected(false);
+
+        // If already connected
+        if (socket.connected) setConnected(true);
+
+        socket.on('connect', onConnect);
+        socket.on('disconnect', onDisconnect);
 
         // System state updates (listen for SIM events)
-        socket.on('simSystemStateUpdate', (state) => {
+        const onSimSystemStateUpdate = (state) => {
             setSystemState(state);
             if (state.poles) {
                 setPoleStates(prev => ({ ...prev, ...state.poles }));
             }
-        });
+        };
+        socket.on('simSystemStateUpdate', onSimSystemStateUpdate);
 
         // Individual pole updates (listen for SIM events)
-        socket.on('simPoleStateUpdate', ({ poleId, state }) => {
+        const onSimPoleStateUpdate = ({ poleId, state }) => {
             setPoleStates(prev => ({ ...prev, [poleId]: state }));
-        });
+        };
+        socket.on('simPoleStateUpdate', onSimPoleStateUpdate);
 
         // Fault events (listen for SIM events)
-        socket.on('simFaultDetected', ({ segment, message, timestamp }) => {
+        const onSimFaultDetected = ({ segment, message, timestamp }) => {
             addLog('🚨', 'FAULT', message, 'text-rose-400');
-        });
-        socket.on('simFaultCleared', ({ segment, message, timestamp }) => {
+        };
+        socket.on('simFaultDetected', onSimFaultDetected);
+
+        const onSimFaultCleared = ({ segment, message, timestamp }) => {
             addLog('✅', 'CLEARED', message, 'text-emerald-400');
-        });
-        socket.on('simGridDown', ({ message }) => {
+        };
+        socket.on('simFaultCleared', onSimFaultCleared);
+
+        const onSimGridDown = ({ message }) => {
             addLog('⚠️', 'GRID DOWN', message, 'text-amber-400');
-        });
-        socket.on('simSystemNormal', ({ message }) => {
+        };
+        socket.on('simGridDown', onSimGridDown);
+
+        const onSimSystemNormal = ({ message }) => {
             addLog('✅', 'NORMAL', message, 'text-emerald-400');
-        });
+        };
+        socket.on('simSystemNormal', onSimSystemNormal);
 
         // Initial fetch (SIM only)
         fetchSystemState();
 
-        return () => socket.disconnect();
-    }, []);
+        // CLEANUP LISTENERS ONLY - DO NOT DISCONNECT SOCKET
+        return () => {
+            socket.off('connect', onConnect);
+            socket.off('disconnect', onDisconnect);
+            socket.off('simSystemStateUpdate', onSimSystemStateUpdate);
+            socket.off('simPoleStateUpdate', onSimPoleStateUpdate);
+            socket.off('simFaultDetected', onSimFaultDetected);
+            socket.off('simFaultCleared', onSimFaultCleared);
+            socket.off('simGridDown', onSimGridDown);
+            socket.off('simSystemNormal', onSimSystemNormal);
+        };
+    }, [socket]);
 
     const fetchSystemState = async () => {
         try {

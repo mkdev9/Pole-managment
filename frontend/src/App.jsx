@@ -341,7 +341,7 @@ function App() {
                         </button>
                     </div>
                 </div>
-                <SimulatorPage />
+                <SimulatorPage socket={socketRef.current} />
             </div>
         );
     }
