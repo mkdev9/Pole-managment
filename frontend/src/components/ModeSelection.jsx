@@ -3,8 +3,8 @@
  *  Mode Selection Gateway
  * ============================================================
  *  Landing page that forces the user to choose between:
- *  - 🔌 Real Hardware Monitor
- *  - 🎮 Simulation
+ *  - Real Hardware Monitor
+ *  - Simulation
  *  
  *  This ensures strict separation of concerns.
  * ============================================================
@@ -44,9 +44,9 @@ function ModeSelection({ onSelectMode, error, loading }) {
                         className="group relative flex flex-col items-center p-8 rounded-3xl bg-slate-800/50 border border-slate-700 hover:border-emerald-500/50 transition-all duration-300 hover:bg-slate-800 hover:shadow-2xl hover:shadow-emerald-500/10 hover:-translate-y-1 disabled:opacity-50 disabled:pointer-events-none"
                     >
                         <div className="w-24 h-24 rounded-full bg-emerald-500/10 flex items-center justify-center text-4xl mb-6 group-hover:scale-110 transition-transform duration-300 ring-1 ring-emerald-500/20 group-hover:ring-emerald-500/50">
-                            🔌
+
                         </div>
-                        <h2 className="text-2xl font-bold text-white mb-2">Real Hardware</h2>
+                        <h2 className="text-2xl font-bold text-white mb-2">Hardware Mode</h2>
                         <p className="text-slate-400 text-sm text-center">
                             Monitor live data from physical Arduino sensors connected to the grid model.
                         </p>
@@ -62,7 +62,7 @@ function ModeSelection({ onSelectMode, error, loading }) {
                         className="group relative flex flex-col items-center p-8 rounded-3xl bg-slate-800/50 border border-slate-700 hover:border-violet-500/50 transition-all duration-300 hover:bg-slate-800 hover:shadow-2xl hover:shadow-violet-500/10 hover:-translate-y-1 disabled:opacity-50 disabled:pointer-events-none"
                     >
                         <div className="w-24 h-24 rounded-full bg-violet-500/10 flex items-center justify-center text-4xl mb-6 group-hover:scale-110 transition-transform duration-300 ring-1 ring-violet-500/20 group-hover:ring-violet-500/50">
-                            🎮
+
                         </div>
                         <h2 className="text-2xl font-bold text-white mb-2">Simulation</h2>
                         <p className="text-slate-400 text-sm text-center">
@@ -76,8 +76,7 @@ function ModeSelection({ onSelectMode, error, loading }) {
 
                 <div className="mt-16 text-center">
                     <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-800/50 border border-slate-700 text-xs text-slate-500">
-                        <span>ℹ️</span>
-                        <span>Strict Mode Active: Only one mode can be active at a time</span>
+                        <span> Designed and Developed by Mallikarjun </span>
                     </div>
                 </div>
             </div>
