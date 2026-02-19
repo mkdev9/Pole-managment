@@ -11,6 +11,8 @@
  */
 
 import React from 'react';
+import HardwareLogo from '../assets/images/HardwareLogo.png';
+import SimulationLogo from '../assets/images/SimulationLogo.png';
 
 function ModeSelection({ onSelectMode, error, loading }) {
     return (
@@ -43,8 +45,8 @@ function ModeSelection({ onSelectMode, error, loading }) {
                         disabled={loading}
                         className="group relative flex flex-col items-center p-8 rounded-3xl bg-slate-800/50 border border-slate-700 hover:border-emerald-500/50 transition-all duration-300 hover:bg-slate-800 hover:shadow-2xl hover:shadow-emerald-500/10 hover:-translate-y-1 disabled:opacity-50 disabled:pointer-events-none"
                     >
-                        <div className="w-24 h-24 rounded-full bg-emerald-500/10 flex items-center justify-center text-4xl mb-6 group-hover:scale-110 transition-transform duration-300 ring-1 ring-emerald-500/20 group-hover:ring-emerald-500/50">
-
+                        <div className="w-32 h-32 rounded-full bg-emerald-500/5 flex items-center justify-center mb-6 group-hover:scale-105 transition-transform duration-300 p-4 ring-1 ring-emerald-500/20 group-hover:ring-emerald-500/50">
+                            <img src={HardwareLogo} alt="Hardware Mode" className="w-full h-full object-contain opacity-80 group-hover:opacity-100 transition-opacity" />
                         </div>
                         <h2 className="text-2xl font-bold text-white mb-2">Hardware Mode</h2>
                         <p className="text-slate-400 text-sm text-center">
@@ -61,8 +63,8 @@ function ModeSelection({ onSelectMode, error, loading }) {
                         disabled={loading}
                         className="group relative flex flex-col items-center p-8 rounded-3xl bg-slate-800/50 border border-slate-700 hover:border-violet-500/50 transition-all duration-300 hover:bg-slate-800 hover:shadow-2xl hover:shadow-violet-500/10 hover:-translate-y-1 disabled:opacity-50 disabled:pointer-events-none"
                     >
-                        <div className="w-24 h-24 rounded-full bg-violet-500/10 flex items-center justify-center text-4xl mb-6 group-hover:scale-110 transition-transform duration-300 ring-1 ring-violet-500/20 group-hover:ring-violet-500/50">
-
+                        <div className="w-32 h-32 rounded-full bg-violet-500/5 flex items-center justify-center mb-6 group-hover:scale-105 transition-transform duration-300 p-4 ring-1 ring-violet-500/20 group-hover:ring-violet-500/50">
+                            <img src={SimulationLogo} alt="Simulation Mode" className="w-full h-full object-contain opacity-80 group-hover:opacity-100 transition-opacity" />
                         </div>
                         <h2 className="text-2xl font-bold text-white mb-2">Simulation</h2>
                         <p className="text-slate-400 text-sm text-center">
