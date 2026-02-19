@@ -13,7 +13,7 @@
 import React from 'react';
 import HardwareLogo from '../assets/images/HardwareLogo.png';
 import SimulationLogo from '../assets/images/SimulationLogo.png';
-import BackgroundVideo from '../assets/videos/Background video.mp4';
+import BackgroundVideo from '../assets/videos/bg_loop.mp4';
 
 function ModeSelection({ onSelectMode, error, loading }) {
     return (
