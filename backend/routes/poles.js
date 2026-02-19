@@ -117,6 +117,38 @@ router.post('/data', async (req, res) => {
     }
 });
 
+// ─── GET /api/poles (All Poles) ─────────────────────────────
+router.get('/', async (req, res) => {
+    const isSim = req.query.sim === 'true';
+    const dbPath = isSim ? `simulation/poles` : `poles`;
+
+    // Default structure if DB is empty
+    const response = {};
+
+    if (db) {
+        try {
+            // Fetch all poles
+            const snap = await db.ref(dbPath).once('value');
+            const data = snap.val();
+
+            if (data) {
+                // Formatting: Convert object to array or keep object? 
+                // Frontends usually expect an array or specific object structure.
+                // standard: return { poles: [ ... ] }
+
+                // Let's return keyed object for easier lookup by ID
+                return res.json(data);
+            }
+        } catch (err) {
+            console.error(err);
+            return res.status(500).json({ error: 'Database error' });
+        }
+    }
+
+    // Fallback if no DB or empty
+    return res.json({});
+});
+
 // ─── GET /api/poles/:id (Charts) ────────────────────────────
 router.get('/:id', async (req, res) => {
     const { id } = req.params;
