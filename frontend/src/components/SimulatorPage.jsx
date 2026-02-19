@@ -426,7 +426,7 @@ function SimulatorPage({ socket }) {
                     🎮 Grid Simulator
                 </h1>
                 <p className="text-slate-400 text-sm">
-                    Test fault detection & isolation logic without Arduino hardware
+                    Test fault simulator page
                 </p>
                 <div className={`inline-flex items-center gap-2 mt-3 px-4 py-1.5 rounded-full text-xs font-medium border backdrop-blur-lg ${connected
                     ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400'
@@ -679,7 +679,7 @@ function SimulatorPage({ socket }) {
             {/* ── Event Log ───────────────────────────────── */}
             <div className="glass-card">
                 <h3 className="text-sm font-bold text-slate-400 mb-3 flex items-center gap-2">
-                    📋 Simulation Event Log
+                    📋 Simulation Event log
                     {eventLog.length > 0 && (
                         <button
                             onClick={() => setEventLog([])}
@@ -713,15 +713,15 @@ function SimulatorPage({ socket }) {
                     <div className="fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-sm flex flex-col items-center justify-center p-4">
                         <div className="bg-slate-800 border border-slate-700 p-8 rounded-2xl shadow-2xl max-w-md w-full text-center">
                             <div className="text-5xl mb-4">🛑</div>
-                            <h2 className="text-2xl font-bold text-slate-100 mb-2">Simulator Process Offline</h2>
+                            <h2 className="text-2xl font-bold text-slate-100 mb-2">Simulator is in Offline</h2>
                             <p className="text-slate-400 mb-6">
-                                The backend simulation process is not running. This can happen after a server restart or deployment.
+                                The backend simulation process is not running. Please run the simulation before checking the Fault Analysis.
                             </p>
                             <button
                                 onClick={startSimulator}
                                 className="w-full py-3 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl font-bold transition-all shadow-lg shadow-emerald-500/20"
                             >
-                                🚀 Launch Simulator
+                                Launch Simulator
                             </button>
                         </div>
                     </div>
