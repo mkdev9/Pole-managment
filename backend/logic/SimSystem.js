@@ -14,7 +14,7 @@ const { runFaultEngine } = require('./FaultDetection');
 const { db } = require('../config/firebase');
 
 const POLE_ORDER = ['Pole1', 'Pole2', 'Pole3', 'Pole4'];
-const STALE_TIMEOUT_MS = 15000;
+const { STALE_TIMEOUT_MS } = require('../config/thresholds');
 
 class SimSystem {
     constructor() {

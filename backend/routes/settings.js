@@ -11,6 +11,9 @@
 const express = require('express');
 const router = express.Router();
 const systemMode = require('../state/systemMode');
+const RealSystem = require('../logic/RealSystem');
+const SimSystem = require('../logic/SimSystem');
+const { stopSimulator } = require('./simulator-routes');
 
 const { db } = require('../config/firebase');
 
@@ -20,14 +23,24 @@ router.get('/mode', (req, res) => {
 });
 
 // ─── SET Mode (Gateway Control) ─────────────────────────────
-router.post('/mode', (req, res) => {
+router.post('/mode', async (req, res) => {
     const { mode } = req.body;
     const oldMode = systemMode.getMode();
 
     if (systemMode.setMode(mode)) {
         console.log(`Setting system mode to: ${mode}`);
 
-        // ─── Simulator Cleanup ────────────────────────────────────
+        // ─── Strict Cleanup ───────────────────────────────────────
+        // Reset in-memory state for BOTH systems to prevent ghost data
+        RealSystem.reset();
+        SimSystem.reset();
+
+        // If leaving simulation, ensure process is killed
+        if (oldMode === 'SIM' && mode !== 'SIM') {
+            await stopSimulator();
+        }
+
+        // ─── Simulator Cloud Cleanup ──────────────────────────────
         // Wipes cloud data ONLY when exiting Simulation Mode
         if (oldMode === 'SIM' && mode === 'IDLE') {
             console.log('🧹 Cleaning up Simulator Data from Cloud...');

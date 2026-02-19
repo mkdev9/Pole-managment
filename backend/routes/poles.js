@@ -10,6 +10,7 @@
 const express = require('express');
 const router = express.Router();
 const RealSystem = require('../logic/RealSystem');
+const { VOLTAGE_THRESHOLD, CURRENT_THRESHOLD } = require('../config/thresholds');
 const { db } = require('../config/firebase');
 
 const VALID_POLES = ['Pole1', 'Pole2', 'Pole3', 'Pole4'];
@@ -64,9 +65,13 @@ router.post('/data', async (req, res) => {
 
             // Feed RealSystem
             // We map the raw voltage/current to the state object RealSystem expects
+            const incomingCurrent = parseFloat(voltage) > VOLTAGE_THRESHOLD ? 'HIGH' : 'LOW';
+            const outgoingCurrent = parseFloat(current) > CURRENT_THRESHOLD ? 'HIGH' : 'LOW';
+
             await RealSystem.updatePole(poleId, {
                 ...record,
-                incomingCurrent: voltage > 50 ? 'HIGH' : 'LOW', // Simple inference
+                incomingCurrent,
+                outgoingCurrent,
                 nodeState: 'NORMAL' // Default, RealSystem logic will override status if faults found
             });
 
