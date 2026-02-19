@@ -58,16 +58,18 @@ class SimSystem {
 
         await this.saveToFirebase(`${this.dbPrefix}/poles/${poleId}`, data);
 
+        let localChanged = false;
         // Auto-start: If we were IDLE, we are now running (NORMAL)
         if (this.systemState.status === 'SIM_IDLE') {
             this.systemState.status = 'NORMAL';
+            localChanged = true;
         }
 
-        const changed = runFaultEngine(this, this.queueCommand.bind(this), this.io);
+        const engineChanged = runFaultEngine(this, this.queueCommand.bind(this), this.io);
 
         if (this.io) {
             this.io.emit(this.events.poleUpdate, { poleId, state: data });
-            if (changed) {
+            if (localChanged || engineChanged) {
                 this.io.emit(this.events.update, this.getSummary());
                 await this.saveToFirebase(`${this.dbPrefix}/system`, this.getSummary());
             }
