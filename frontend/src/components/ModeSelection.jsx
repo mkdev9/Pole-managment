@@ -13,11 +13,26 @@
 import React from 'react';
 import HardwareLogo from '../assets/images/HardwareLogo.png';
 import SimulationLogo from '../assets/images/SimulationLogo.png';
+import BackgroundVideo from '../assets/videos/Background video.mp4';
 
 function ModeSelection({ onSelectMode, error, loading }) {
     return (
-        <div className="min-h-screen bg-slate-900 text-slate-200 flex flex-col items-center justify-center p-4">
-            <div className="max-w-4xl w-full">
+        <div className="relative min-h-screen bg-slate-900 text-slate-200 flex flex-col items-center justify-center p-4 overflow-hidden">
+            {/* Background Video */}
+            <video
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="absolute inset-0 w-full h-full object-cover z-0 opacity-50"
+            >
+                <source src={BackgroundVideo} type="video/mp4" />
+            </video>
+
+            {/* Overlay Gradient */}
+            <div className="absolute inset-0 z-0 bg-gradient-to-b from-slate-900/80 via-slate-900/60 to-slate-900/90 pointer-events-none"></div>
+
+            <div className="max-w-4xl w-full z-10 relative">
                 <div className="text-center mb-12">
                     <h1 className="text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent mb-4">
                         Utility Pole Monitor
