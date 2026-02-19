@@ -14,6 +14,7 @@ Thumbs.db
 .env.production.local
 backend/.env
 backend/.env.render
+frontend/.env.vercel
 *.pem
 *.json
 !package.json

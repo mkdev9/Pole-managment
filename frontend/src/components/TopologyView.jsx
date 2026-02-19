@@ -77,6 +77,7 @@ function PoleNode({ poleId, state, isGrid }) {
         FAULT_DOWNSTREAM: 'border-orange-500/50 bg-orange-500/10',
         RECOVERY: 'border-blue-500/50 bg-blue-500/10',
         OFFLINE: 'border-slate-600/50 bg-slate-600/10',
+        WAITING: 'border-slate-600/50 bg-slate-600/10',
         UNKNOWN: 'border-slate-600/50 bg-slate-600/10',
     };
 
@@ -170,6 +171,7 @@ function TopologyView({ systemState, poleCoordStates, polesData }) {
         NORMAL: { bg: 'bg-emerald-500/10 border-emerald-500/30', text: 'text-emerald-400', icon: '✅', label: 'All poles energized — system operating normally' },
         FAULT: { bg: 'bg-rose-500/10 border-rose-500/30', text: 'text-rose-400', icon: '🚨', label: `Wire fault detected between ${faultLocation ? faultLocation.replace('-', ' → ') : 'poles'} — relays isolating` },
         GRID_DOWN: { bg: 'bg-amber-500/10 border-amber-500/30', text: 'text-amber-400', icon: '⚠️', label: 'Grid power supply offline — all poles de-energized' },
+        WAITING: { bg: 'bg-slate-500/10 border-slate-500/30', text: 'text-slate-400', icon: '⏳', label: 'Waiting for hardware connection...' },
     };
     const banner = bannerConfig[status] || bannerConfig.NORMAL;
 

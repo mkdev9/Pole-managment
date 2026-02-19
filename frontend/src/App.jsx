@@ -436,7 +436,8 @@ function App() {
                             <span className="text-2xl">🛡️</span>
                             <div>
                                 <div className="text-[0.68rem] text-slate-500 uppercase tracking-widest">System</div>
-                                <div className={`text-xl font-bold ${systemState.status === 'NORMAL' ? 'text-emerald-400' : 'text-rose-400'}`}>
+                                <div className={`text-xl font-bold ${systemState.status === 'NORMAL' ? 'text-emerald-400' :
+                                    systemState.status === 'WAITING' ? 'text-slate-400' : 'text-rose-400'}`}>
                                     {systemState.status}
                                 </div>
                             </div>

@@ -31,7 +31,7 @@ function createInitialState(type) {
         poleStates: { Pole1: null, Pole2: null, Pole3: null, Pole4: null },
         pendingCommands: { Pole1: [], Pole2: [], Pole3: [], Pole4: [] },
         systemState: {
-            status: 'NORMAL',
+            status: 'WAITING',
             faultLocation: null,
             faultType: null,
             lastFaultTime: null,
@@ -97,10 +97,10 @@ setInterval(() => {
 
         // If all poles went stale, reset entire system to clean NORMAL
         if (anyWentStale && !anyActive) {
-            console.log(`🔄 [${ctx.type}] All data sources inactive — resetting system state to NORMAL`);
+            console.log(`🔄 [${ctx.type}] All data sources inactive — resetting system state to WAITING`);
             // Reset system state logic
             ctx.systemState = {
-                status: 'NORMAL',
+                status: 'WAITING',
                 faultLocation: null,
                 faultType: null,
                 lastFaultTime: null,
