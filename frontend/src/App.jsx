@@ -88,6 +88,11 @@ function App() {
                 setCurrentMode(data.mode);
                 // Clear old data when switching
                 setFaultLog([]);
+                // STRICT RESET: Wipe all state to prevent ghost data from previous mode
+                setPolesData({ Pole1: null, Pole2: null, Pole3: null, Pole4: null });
+                setSystemState({ status: 'NORMAL', faultLocation: null, isolatedSegments: [], poles: {} });
+                setPoleCoordStates({ Pole1: null, Pole2: null, Pole3: null, Pole4: null });
+
                 fetchInitialData(data.mode === 'SIM');
             } else {
                 throw new Error(`Server returned ${res.status}`);
