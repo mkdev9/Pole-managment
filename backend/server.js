@@ -28,7 +28,8 @@ const cors = require('cors');
 // ─── Routes ─────────────────────────────────────────────────
 const polesRouter = require('./routes/poles');
 const coordinationRouter = require('./routes/coordination');
-const simulatorRouter = require('./routes/simulator-routes');
+// Updated import to get both the router and the stop function
+const { router: simulatorRouter, stopSimulator } = require('./routes/simulator-routes');
 const settingsRouter = require('./routes/settings');
 
 // ─── App initialization ─────────────────────────────────────
@@ -92,6 +93,16 @@ io.on('connection', (socket) => {
 
     socket.on('disconnect', (reason) => {
         console.log(`🔌 Client disconnected: ${socket.id} (${reason})`);
+
+        // AUTO-STOP SIMULATOR ON DISCONNECT
+        // This ensures the simulator doesn't keep running as a "zombie" process
+        // if the user closes the tab without stopping it.
+        // We add a small delay to avoid stopping on quick refresh/reconnects?
+        // For now, strict stop is safer for a demo/single-user app.
+
+        stopSimulator().then(stopped => {
+            if (stopped) console.log('🛑 Simulator auto-stopped due to client disconnect.');
+        });
     });
 
     // Allow clients to subscribe to specific pole updates

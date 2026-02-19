@@ -30,6 +30,31 @@ const ACTION_MAP = {
     'RECOVER': 'r',
 };
 
+// ─── Helpher: Stop Simulator ──────────────────────────────────
+async function stopSimulator() {
+    if (!simProcess) return false;
+
+    console.log('🛑 Stopping Simulator Process (Process or Socket Trigger)...');
+    simProcess.kill();
+    simProcess = null;
+
+    // Reset system state to "Unknown" / Normal
+    try {
+        console.log('🔄 Triggering coordination state reset...');
+        // Wait briefly for process to die before cleaning DB
+        setTimeout(async () => {
+            try {
+                await axios.post(`http://localhost:${PORT}/api/coordination/reset`, { isSimulation: true });
+            } catch (err) {
+                console.error('⚠️ Failed to reset coordination state:', err.message);
+            }
+        }, 500);
+    } catch (err) {
+        console.error('⚠️ Failed to reset coordination state logic:', err.message);
+    }
+    return true;
+}
+
 // ─── POST /command ──────────────────────────────────────────
 router.post('/command', (req, res) => {
     const { action } = req.body || {};
@@ -57,7 +82,6 @@ router.post('/command', (req, res) => {
 });
 
 // ─── GET /status ──────────────────────────────────────────────
-// (Legacy support, maybe optional now)
 router.get('/status', (req, res) => {
     try {
         const cmd = fs.existsSync(cmdFile) ? fs.readFileSync(cmdFile, 'utf8').trim() : '';
@@ -75,7 +99,6 @@ router.post('/start', (req, res) => {
 
     console.log('🚀 Starting Simulator Process...');
     // Execute simulator.js in the current working directory (backend root)
-    // stdio: ['inherit', 'inherit', 'inherit', 'ipc'] is required for process.send()
     simProcess = spawn('node', ['simulator.js'], {
         stdio: ['inherit', 'inherit', 'inherit', 'ipc'],
         cwd: process.cwd(),
@@ -94,33 +117,14 @@ router.post('/start', (req, res) => {
 
 // ─── POST /stop ───────────────────────────────────────────────
 router.post('/stop', async (req, res) => {
-    if (!simProcess) {
+    const stopped = await stopSimulator();
+    if (!stopped) {
         // Even if not running, ensure state is reset to be safe
         try {
             await axios.post(`http://localhost:${PORT}/api/coordination/reset`, { isSimulation: true });
         } catch (e) { }
         return res.json({ success: false, message: 'Simulator is not running (State reset requested).' });
     }
-
-    console.log('🛑 Stopping Simulator Process...');
-    simProcess.kill();
-    simProcess = null;
-
-    // Reset system state to "Unknown" / Normal
-    try {
-        console.log('🔄 Triggering coordination state reset...');
-        // Wait briefly for process to die before cleaning DB
-        setTimeout(async () => {
-            try {
-                await axios.post(`http://localhost:${PORT}/api/coordination/reset`, { isSimulation: true });
-            } catch (err) {
-                console.error('⚠️ Failed to reset coordination state:', err.message);
-            }
-        }, 500);
-    } catch (err) {
-        console.error('⚠️ Failed to reset coordination state logic:', err.message);
-    }
-
     res.json({ success: true, message: 'Simulator stopped and state reset' });
 });
 
@@ -129,4 +133,4 @@ router.get('/running', (req, res) => {
     res.json({ running: !!simProcess });
 });
 
-module.exports = router;
+module.exports = { router, stopSimulator };
