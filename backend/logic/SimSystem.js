@@ -58,6 +58,11 @@ class SimSystem {
 
         await this.saveToFirebase(`${this.dbPrefix}/poles/${poleId}`, data);
 
+        // Auto-start: If we were IDLE, we are now running (NORMAL)
+        if (this.systemState.status === 'SIM_IDLE') {
+            this.systemState.status = 'NORMAL';
+        }
+
         const changed = runFaultEngine(this, this.queueCommand.bind(this), this.io);
 
         if (this.io) {
@@ -88,7 +93,7 @@ class SimSystem {
 
     getSummary() {
         const summary = {
-            status: this.systemState.status,
+            status: this.systemState.status === 'NORMAL' ? 'SIM_NORMAL' : this.systemState.status,
             faultLocation: this.systemState.faultLocation,
             faultType: this.systemState.faultType,
             lastFaultTime: this.systemState.lastFaultTime,

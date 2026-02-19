@@ -79,6 +79,7 @@ function PoleNode({ poleId, state, isGrid }) {
         OFFLINE: 'border-slate-600/50 bg-slate-600/10',
         WAITING: 'border-slate-600/50 bg-slate-600/10',
         SIM_IDLE: 'border-violet-600/50 bg-violet-600/10',
+        SIM_NORMAL: 'border-violet-600/50 bg-violet-600/10',
         UNKNOWN: 'border-slate-600/50 bg-slate-600/10',
     };
 
@@ -174,6 +175,7 @@ function TopologyView({ systemState, poleCoordStates, polesData }) {
         GRID_DOWN: { bg: 'bg-amber-500/10 border-amber-500/30', text: 'text-amber-400', icon: '⚠️', label: 'Grid power supply offline — all poles de-energized' },
         WAITING: { bg: 'bg-slate-500/10 border-slate-500/30', text: 'text-slate-400', icon: '⏳', label: 'Waiting for hardware connection...' },
         SIM_IDLE: { bg: 'bg-violet-500/10 border-violet-500/30', text: 'text-violet-400', icon: '🎮', label: 'Simulator Ready — Press Start to begin' },
+        SIM_NORMAL: { bg: 'bg-violet-500/10 border-violet-500/30', text: 'text-violet-400', icon: '🎮', label: 'Power line is nominal' },
     };
     const banner = bannerConfig[status] || bannerConfig.NORMAL;
 
