@@ -220,16 +220,16 @@ function PoleCard({ poleId, data, coordState }) {
             </div>
 
             {/* Footer */}
-            <div className="flex justify-between items-end mt-auto pt-2 border-t border-white/[0.03]">
-                <div className="text-[0.6rem] text-slate-600 font-mono">
-                    ID: {labels.vIn}
+            {data?.receivedAt && (
+                <div className="flex justify-between items-end mt-auto pt-2 border-t border-white/[0.03]">
+                    <div className="text-[0.6rem] text-slate-600 font-mono">
+                        ID: {labels.vIn}
+                    </div>
+                    <div className="text-[0.6rem] text-slate-500 font-mono">
+                        {new Date(data.receivedAt).toLocaleTimeString([], { hour12: false })}
+                    </div>
                 </div>
-                <div className="text-[0.6rem] text-slate-500 font-mono">
-                    {data?.receivedAt
-                        ? new Date(data.receivedAt).toLocaleTimeString([], { hour12: false })
-                        : 'WAITING'}
-                </div>
-            </div>
+            )}
         </div>
     );
 }
