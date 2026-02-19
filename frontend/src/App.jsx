@@ -336,12 +336,12 @@ function App() {
     if (activePage === 'simulator' && isSimView) {
         return (
             <div className="min-h-screen">
-                <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 pt-6">
-                    <div className="flex justify-center gap-2 mb-2">
-                        <button onClick={() => setActivePage('dashboard')} className="px-5 py-2 rounded-xl text-sm font-semibold transition-all duration-200 bg-white/[0.04] text-slate-400 hover:bg-white/[0.08] hover:text-slate-200 border border-white/[0.06]">
+                <div className="max-w-[1600px] mx-auto px-6 pt-6">
+                    <div className="flex justify-center gap-3 mb-4">
+                        <button onClick={() => setActivePage('dashboard')} className="px-6 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 bg-white/[0.02] text-slate-400 hover:bg-white/[0.05] hover:text-slate-200 border border-white/[0.05]">
                             📊 Dashboard
                         </button>
-                        <button className="px-5 py-2 rounded-xl text-sm font-semibold transition-all duration-200 bg-violet-500/20 text-violet-300 border border-violet-500/30 shadow-lg shadow-violet-500/10">
+                        <button className="px-6 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 bg-violet-500/10 text-violet-300 border border-violet-500/20 shadow-[0_0_15px_rgba(139,92,246,0.1)]">
                             🎮 Simulator Controls
                         </button>
                     </div>
@@ -352,29 +352,37 @@ function App() {
     }
 
     return (
-        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-8 min-h-screen">
+        <div className="max-w-[1600px] mx-auto px-6 py-8 min-h-screen">
             {/* Header / Nav */}
-            <div className="flex justify-between items-center mb-8">
+            <div className="flex justify-between items-center mb-10 pb-4 border-b border-white/[0.02]">
                 {/* Left: Branding */}
-                <div className="flex items-center gap-3">
-                    <h1 className="text-2xl font-bold bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
-                        Utility Pole Monitor
-                    </h1>
-                    <div className={`text-[0.6rem] px-2 py-0.5 rounded border uppercase tracking-wider font-bold ${isSimView ? 'bg-violet-500/20 border-violet-500/50 text-violet-400' : 'bg-emerald-500/20 border-emerald-500/50 text-emerald-400'}`}>
-                        {isSimView ? 'Simulation Mode' : 'Real Hardware'}
+                <div className="flex items-center gap-4">
+                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500/20 to-cyan-500/20 border border-emerald-500/20 flex items-center justify-center">
+                        <span className="text-xl">⚡</span>
+                    </div>
+                    <div>
+                        <h1 className="text-xl font-bold text-slate-100 tracking-tight">
+                            Utility Pole Monitor
+                        </h1>
+                        <div className="flex items-center gap-2 mt-0.5">
+                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                            <span className="text-[0.65rem] uppercase tracking-widest text-slate-500 font-bold">
+                                {isSimView ? 'Simulation Environment' : 'Live Hardware Feed'}
+                            </span>
+                        </div>
                     </div>
                 </div>
 
                 {/* Right: Controls */}
-                <div className="flex items-center gap-3">
-                    <div className={`hidden sm:inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium border backdrop-blur-lg ${statusStyles[connectionStatus]}`}>
+                <div className="flex items-center gap-4">
+                    <div className={`hidden sm:inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium border backdrop-blur-lg transition-colors ${statusStyles[connectionStatus]}`}>
                         <span className={`w-2 h-2 rounded-full animate-pulse-dot ${dotColor[connectionStatus]}`}></span>
                         <span className="capitalize">{connectionStatus}</span>
                     </div>
 
                     <button
                         onClick={handleExitSession}
-                        className="px-4 py-1.5 rounded-lg bg-slate-800 border border-slate-700 text-slate-400 text-xs font-bold hover:bg-slate-700 hover:text-white transition-colors"
+                        className="px-4 py-2 rounded-lg bg-white/[0.03] border border-white/[0.05] text-slate-400 text-xs font-bold hover:bg-white/[0.08] hover:text-white transition-all"
                     >
                         Exit Session
                     </button>
@@ -383,24 +391,24 @@ function App() {
 
             {/* Sim Nav Tabs & Controls (Only show in Sim mode) */}
             {isSimView && (
-                <div className="flex flex-col items-center gap-4 mb-6">
-                    <div className="flex justify-center gap-2">
-                        <button className="px-5 py-2 rounded-xl text-sm font-semibold transition-all duration-200 bg-blue-500/20 text-blue-300 border border-blue-500/30 shadow-lg shadow-blue-500/10">
+                <div className="flex flex-col items-center gap-6 mb-10">
+                    <div className="flex justify-center gap-3">
+                        <button className="px-6 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 bg-blue-500/10 text-blue-300 border border-blue-500/20 shadow-[0_0_15px_rgba(59,130,246,0.1)]">
                             📊 Dashboard
                         </button>
-                        <button onClick={() => setActivePage('simulator')} className="px-5 py-2 rounded-xl text-sm font-semibold transition-all duration-200 bg-white/[0.04] text-slate-400 hover:bg-white/[0.08] hover:text-slate-200 border border-white/[0.06]">
+                        <button onClick={() => setActivePage('simulator')} className="px-6 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 bg-white/[0.02] text-slate-400 hover:bg-white/[0.05] hover:text-slate-200 border border-white/[0.05]">
                             🎮 Simulator Controls
                         </button>
                     </div>
 
                     {/* Master Simulation Process Control */}
-                    <div className="flex gap-3">
+                    <div className="flex gap-4">
                         {!isSimRunning ? (
-                            <button onClick={handleStartSim} className="group relative px-6 py-2 rounded-full bg-emerald-500 hover:bg-emerald-400 text-white font-bold shadow-lg shadow-emerald-500/20 transition-all flex items-center gap-2">
+                            <button onClick={handleStartSim} className="group relative px-8 py-2.5 rounded-full bg-emerald-600/20 border border-emerald-500/50 hover:bg-emerald-500/30 text-emerald-300 font-bold transition-all flex items-center gap-3 hover:shadow-[0_0_20px_rgba(16,185,129,0.2)]">
                                 <span className="text-lg">▶</span> Start Simulation
                             </button>
                         ) : (
-                            <button onClick={handleStopSim} className="group relative px-6 py-2 rounded-full bg-rose-500 hover:bg-rose-400 text-white font-bold shadow-lg shadow-rose-500/20 transition-all flex items-center gap-2 animate-pulse">
+                            <button onClick={handleStopSim} className="group relative px-8 py-2.5 rounded-full bg-rose-600/20 border border-rose-500/50 hover:bg-rose-500/30 text-rose-300 font-bold transition-all flex items-center gap-3 hover:shadow-[0_0_20px_rgba(244,63,94,0.2)] animate-pulse">
                                 <span className="text-lg">⏹</span> Stop Simulation
                             </button>
                         )}
@@ -410,38 +418,38 @@ function App() {
 
             {/* Error Banner */}
             {error && (
-                <div className="alert-banner bg-rose-500/[0.08] border border-rose-500/40 text-rose-400 rounded-2xl mb-6">
+                <div className="alert-banner">
                     <span className="text-lg flex-shrink-0">⚠️</span>
                     {error}
                 </div>
             )}
 
             {/* Content Grid */}
-            <div className="grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-8">
                 <div>
                     <TopologyView systemState={systemState} poleCoordStates={poleCoordStates} polesData={polesData} />
 
                     {/* Stats */}
-                    <div className="flex justify-center flex-wrap gap-4 sm:gap-6 mb-8 mt-6">
-                        <div className="stat-pill">
-                            <span className="text-2xl">📡</span>
+                    <div className="flex flex-wrap gap-4 mb-8 mt-8">
+                        <div className="stat-pill flex-1">
+                            <span className="text-3xl opacity-50">📡</span>
                             <div>
-                                <div className="text-[0.68rem] text-slate-500 uppercase tracking-widest">Active Poles</div>
-                                <div className="text-xl font-bold text-slate-100">{activePolesNodes} / {POLE_IDS.length}</div>
+                                <div className="text-[0.6rem] text-slate-500 uppercase tracking-widest font-bold">Active Poles</div>
+                                <div className="text-2xl font-bold text-slate-200 tracking-tight">{activePolesNodes} <span className="text-slate-600 text-lg">/ {POLE_IDS.length}</span></div>
                             </div>
                         </div>
-                        <div className="stat-pill">
-                            <span className="text-2xl">⚡</span>
+                        <div className="stat-pill flex-1">
+                            <span className="text-3xl opacity-50">⚡</span>
                             <div>
-                                <div className="text-[0.68rem] text-slate-500 uppercase tracking-widest">Avg Voltage</div>
-                                <div className="text-xl font-bold text-slate-100">{avgVoltage.toFixed(1)} V</div>
+                                <div className="text-[0.6rem] text-slate-500 uppercase tracking-widest font-bold">Avg Voltage</div>
+                                <div className="text-2xl font-bold text-slate-200 tracking-tight">{avgVoltage.toFixed(1)} <span className="text-slate-600 text-sm">V</span></div>
                             </div>
                         </div>
-                        <div className="stat-pill">
-                            <span className="text-2xl">🛡️</span>
+                        <div className="stat-pill flex-1">
+                            <span className="text-3xl opacity-50">🛡️</span>
                             <div>
-                                <div className="text-[0.68rem] text-slate-500 uppercase tracking-widest">System</div>
-                                <div className={`text-xl font-bold ${systemState.status === 'NORMAL' ? 'text-emerald-400' :
+                                <div className="text-[0.6rem] text-slate-500 uppercase tracking-widest font-bold">System Status</div>
+                                <div className={`text-xl font-bold tracking-tight ${systemState.status === 'NORMAL' ? 'text-emerald-400' :
                                     systemState.status === 'WAITING' ? 'text-slate-400' :
                                         systemState.status === 'SIM_IDLE' ? 'text-violet-400' : 'text-rose-400'}`}>
                                     {systemState.status}
@@ -451,7 +459,7 @@ function App() {
                     </div>
 
                     {/* Pole Cards */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 mb-10">
+                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-10">
                         {POLE_IDS.map(poleId => (
                             <PoleCard
                                 key={poleId}
@@ -465,13 +473,17 @@ function App() {
                     {/* Log */}
                     {faultLog.length > 0 && (
                         <div className="glass-card mb-10">
-                            <h3 className="text-sm font-bold text-slate-400 mb-3">📋 Event Log</h3>
-                            <div className="space-y-1.5 max-h-[200px] overflow-y-auto">
+                            <div className="flex items-center gap-3 mb-4">
+                                <div className="w-1 h-4 bg-slate-500 rounded-full"></div>
+                                <h3 className="text-sm font-bold text-slate-300 uppercase tracking-widest">Event Log</h3>
+                            </div>
+                            <div className="space-y-2 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar">
                                 {faultLog.map((entry, i) => (
-                                    <div key={i} className="flex items-center gap-2 text-xs px-3 py-2 rounded-lg bg-white/[0.02] border border-white/[0.05]">
-                                        <span className={`font-semibold ${entry.type === 'FAULT' ? 'text-rose-400' : 'text-emerald-400'}`}>{entry.type}</span>
-                                        <span className="text-slate-300 flex-1">{entry.message}</span>
-                                        <span className="text-slate-600 text-[0.65rem]">{entry.time.toLocaleTimeString()}</span>
+                                    <div key={i} className="flex items-center gap-3 text-xs px-4 py-3 rounded-lg bg-white/[0.02] border border-white/[0.03] hover:bg-white/[0.04] transition-colors">
+                                        <div className={`w-1.5 h-1.5 rounded-full ${entry.type === 'FAULT' ? 'bg-rose-500' : 'bg-emerald-500'}`}></div>
+                                        <span className={`font-mono font-bold ${entry.type === 'FAULT' ? 'text-rose-400' : 'text-emerald-400'}`}>{entry.type}</span>
+                                        <span className="text-slate-400 flex-1">{entry.message}</span>
+                                        <span className="text-slate-700 font-mono">{entry.time.toLocaleTimeString()}</span>
                                     </div>
                                 ))}
                             </div>
@@ -480,21 +492,36 @@ function App() {
 
                     {/* Charts */}
                     <section>
-                        <h2 className="text-xl font-bold text-slate-100 text-center mb-6">
-                            📊 Power Usage Live Analytics ({isSimView ? 'Simulation' : 'Live'})
-                        </h2>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                        <div className="flex items-center gap-3 mb-6 justify-center">
+                            <div className="h-px flex-1 bg-gradient-to-r from-transparent to-slate-800"></div>
+                            <h2 className="text-sm font-bold text-slate-500 uppercase tracking-widest">
+                                Live Analytics & Trends
+                            </h2>
+                            <div className="h-px flex-1 bg-gradient-to-l from-transparent to-slate-800"></div>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             {POLE_IDS.map(poleId => (
-                                <PoleChart key={poleId} poleId={poleId} readings={polesHistory[poleId]} />
+                                <PoleCardChartWrapper key={poleId}> {/* Wrapper to simplify chart integration if needed, or just PoleChart */}
+                                    <PoleChart poleId={poleId} readings={polesHistory[poleId]} />
+                                </PoleCardChartWrapper>
                             ))}
                         </div>
                     </section>
                 </div>
 
-                <aside className="lg:sticky lg:top-6 lg:self-start">
+                <aside className="lg:sticky lg:top-8 lg:self-start">
                     <HardwareStatus polesData={polesData} poleCoordStates={poleCoordStates} />
                 </aside>
             </div>
+        </div>
+    );
+}
+
+// Simple wrapper for chart styling consistencies
+function PoleCardChartWrapper({ children }) {
+    return (
+        <div className="glass-card p-0 overflow-hidden">
+            {children}
         </div>
     );
 }

@@ -124,9 +124,9 @@ function PoleCard({ poleId, data, coordState }) {
     return (
         <div className={cardClass}>
             {/* Header */}
-            <div className="flex justify-between items-center mb-3">
-                <div className="flex items-center gap-2 text-lg font-bold text-slate-100">
-                    <span className="text-xl">⚡</span>
+            <div className="flex justify-between items-center mb-4 pb-3 border-b border-white/[0.03]">
+                <div className="flex items-center gap-2 text-base font-bold text-slate-200">
+                    <span className="text-lg opacity-60">⚡</span>
                     {poleId}
                 </div>
                 <span className={`badge badge--${statusType}`}>
@@ -134,21 +134,24 @@ function PoleCard({ poleId, data, coordState }) {
                 </span>
             </div>
 
-            {/* Node State Label */}
-            {coordState && (
-                <div className={`text-[0.6rem] font-bold uppercase tracking-widest mb-3 ${nodeState === 'NORMAL' ? 'text-emerald-500' :
-                    nodeState === 'GRID_DOWN' ? 'text-amber-400' :
-                        nodeState === 'RECOVERY' ? 'text-blue-400' :
-                            'text-rose-400'
-                    }`}>
-                    ● State: {nodeState}
-                </div>
-            )}
+            {/* State & Alert */}
+            <div className="min-h-[20px] mb-3">
+                {coordState && (
+                    <div className={`text-[0.6rem] font-bold uppercase tracking-widest flex items-center gap-2 ${nodeState === 'NORMAL' ? 'text-emerald-500' :
+                        nodeState === 'GRID_DOWN' ? 'text-amber-400' :
+                            nodeState === 'RECOVERY' ? 'text-blue-400' :
+                                'text-rose-400'
+                        }`}>
+                        <span className="w-1.5 h-1.5 rounded-full bg-current"></span>
+                        {nodeState}
+                    </div>
+                )}
+            </div>
 
             {/* Alert Message Banner */}
             {anomaly && (
-                <div className={`flex items-center gap-2 px-3 py-2 rounded-xl border mb-3 text-xs font-medium ${severityColors[anomaly.severity]}`}>
-                    <span className="text-base flex-shrink-0">{anomaly.icon}</span>
+                <div className={`flex items-start gap-2 px-3 py-2.5 rounded-lg border mb-4 text-xs font-medium leading-relaxed ${severityColors[anomaly.severity]}`}>
+                    <span className="text-sm mt-0.5">{anomaly.icon}</span>
                     <span>{anomaly.message}</span>
                 </div>
             )}
@@ -159,19 +162,19 @@ function PoleCard({ poleId, data, coordState }) {
                     {/* Pole 4 specific: Show PDV/PDC status instead of Relay */}
                     {isTerminal ? (
                         <>
-                            <div className={`flex items-center justify-between text-xs px-3 py-2 rounded-lg border ${!voltageAlert ? 'bg-emerald-500/5 border-emerald-500/20' : 'bg-rose-500/10 border-rose-500/30'}`}>
+                            <div className={`flex items-center justify-between text-[0.7rem] px-3 py-2 rounded-lg border bg-opacity-20 ${!voltageAlert ? 'bg-emerald-500/5 border-emerald-500/10' : 'bg-rose-500/5 border-rose-500/20'}`}>
                                 <div className="flex items-center gap-2">
-                                    <span className={`w-1.5 h-1.5 rounded-full ${!voltageAlert ? 'bg-emerald-400' : 'bg-rose-500'}`}></span>
-                                    <span className="text-slate-400 font-medium">{labels.vIn} <span className="text-[0.6rem] opacity-50">(Status)</span></span>
+                                    <span className={`w-1 h-1 rounded-full ${!voltageAlert ? 'bg-emerald-400' : 'bg-rose-500'}`}></span>
+                                    <span className="text-slate-400 font-medium">{labels.vIn} Status</span>
                                 </div>
                                 <span className={`font-bold tracking-wide ${!voltageAlert ? 'text-emerald-400' : 'text-rose-400'}`}>
                                     {!voltageAlert ? 'NORMAL' : 'ALERT'}
                                 </span>
                             </div>
-                            <div className={`flex items-center justify-between text-xs px-3 py-2 rounded-lg border ${!currentAlert ? 'bg-emerald-500/5 border-emerald-500/20' : 'bg-rose-500/10 border-rose-500/30'}`}>
+                            <div className={`flex items-center justify-between text-[0.7rem] px-3 py-2 rounded-lg border bg-opacity-20 ${!currentAlert ? 'bg-emerald-500/5 border-emerald-500/10' : 'bg-rose-500/5 border-rose-500/20'}`}>
                                 <div className="flex items-center gap-2">
-                                    <span className={`w-1.5 h-1.5 rounded-full ${!currentAlert ? 'bg-emerald-400' : 'bg-rose-500'}`}></span>
-                                    <span className="text-slate-400 font-medium">{labels.cIn} <span className="text-[0.6rem] opacity-50">(Status)</span></span>
+                                    <span className={`w-1 h-1 rounded-full ${!currentAlert ? 'bg-emerald-400' : 'bg-rose-500'}`}></span>
+                                    <span className="text-slate-400 font-medium">{labels.cIn} Status</span>
                                 </div>
                                 <span className={`font-bold tracking-wide ${!currentAlert ? 'text-emerald-400' : 'text-rose-400'}`}>
                                     {!currentAlert ? 'NORMAL' : 'ALERT'}
@@ -179,60 +182,53 @@ function PoleCard({ poleId, data, coordState }) {
                             </div>
                         </>
                     ) : (
-                        <div className={`flex items-center justify-between text-xs px-3 py-2 rounded-lg border ${relayIn === 'ON' ? 'bg-emerald-500/5 border-emerald-500/20' : 'bg-rose-500/10 border-rose-500/30'
-                            }`}>
-                            <div className="flex items-center gap-2">
-                                <span className={`w-1.5 h-1.5 rounded-full ${relayIn === 'ON' ? 'bg-emerald-400' : 'bg-rose-500'}`}></span>
-                                <span className="text-slate-400 font-medium">{labels.rIn} <span className="text-[0.6rem] opacity-50">(Relay)</span></span>
+                        <div className="grid grid-cols-2 gap-2">
+                            <div className={`flex flex-col items-center justify-center gap-1 p-2 rounded-lg border bg-opacity-20 ${relayIn === 'ON' ? 'bg-emerald-500/5 border-emerald-500/10' : 'bg-slate-500/5 border-slate-500/10'}`}>
+                                <div className="text-[0.6rem] text-slate-500 font-bold uppercase">{labels.rIn}</div>
+                                <span className={`text-xs font-bold tracking-wide ${relayIn === 'ON' ? 'text-emerald-400' : 'text-slate-400'}`}>
+                                    {relayIn === 'ON' ? 'OPEN' : 'CLOSED'}
+                                </span>
                             </div>
-                            <span className={`font-bold tracking-wide ${relayIn === 'ON' ? 'text-emerald-400' : 'text-rose-400'}`}>
-                                {relayIn === 'ON' ? 'CONNECTED' : 'ISOLATED'}
-                            </span>
-                        </div>
-                    )}
 
-                    {!isTerminal && (
-                        <div className={`flex items-center justify-between text-xs px-3 py-2 rounded-lg border ${relayOut === 'ON' ? 'bg-emerald-500/5 border-emerald-500/20' : 'bg-rose-500/10 border-rose-500/30'
-                            }`}>
-                            <div className="flex items-center gap-2">
-                                <span className={`w-1.5 h-1.5 rounded-full ${relayOut === 'ON' ? 'bg-emerald-400' : 'bg-rose-500'}`}></span>
-                                <span className="text-slate-400 font-medium">{labels.rOut} <span className="text-[0.6rem] opacity-50">(Relay)</span></span>
-                            </div>
-                            <span className={`font-bold tracking-wide ${relayOut === 'ON' ? 'text-emerald-400' : 'text-rose-400'}`}>
-                                {relayOut === 'ON' ? 'CONNECTED' : 'ISOLATED'}
-                            </span>
+                            {!isTerminal && (
+                                <div className={`flex flex-col items-center justify-center gap-1 p-2 rounded-lg border bg-opacity-20 ${relayOut === 'ON' ? 'bg-emerald-500/5 border-emerald-500/10' : 'bg-slate-500/5 border-slate-500/10'}`}>
+                                    <div className="text-[0.6rem] text-slate-500 font-bold uppercase">{labels.rOut}</div>
+                                    <span className={`text-xs font-bold tracking-wide ${relayOut === 'ON' ? 'text-emerald-400' : 'text-slate-400'}`}>
+                                        {relayOut === 'ON' ? 'OPEN' : 'CLOSED'}
+                                    </span>
+                                </div>
+                            )}
                         </div>
                     )}
                 </div>
             )}
 
             {/* Metrics Grid */}
-            <div className="grid grid-cols-2 gap-3 mb-4">
+            <div className="grid grid-cols-2 gap-2 mb-4">
                 <div className="metric-tile">
-                    <div className="text-[0.7rem] text-slate-500 uppercase tracking-wider mb-1">{labels.vIn} (Voltage)</div>
-                    <div className={`text-2xl font-bold font-mono leading-none ${voltageAlert ? 'text-rose-400' : 'text-cyan-400'}`}>
-                        {voltage}<span className="text-sm font-normal text-slate-400 ml-0.5">V</span>
+                    <div className="text-[0.6rem] text-slate-500 font-semibold uppercase tracking-wider mb-1">Voltage</div>
+                    <div className={`text-xl font-bold font-mono leading-none ${voltageAlert ? 'text-rose-400' : 'text-slate-200'}`}>
+                        {voltage}<span className="text-xs font-normal text-slate-600 ml-0.5">V</span>
                     </div>
                 </div>
                 <div className="metric-tile">
-                    <div className="text-[0.7rem] text-slate-500 uppercase tracking-wider mb-1">{labels.cIn} (Current)</div>
-                    <div className={`text-2xl font-bold font-mono leading-none ${currentAlert ? 'text-rose-400' : 'text-amber-400'}`}>
-                        {current}<span className="text-sm font-normal text-slate-400 ml-0.5">A</span>
-                    </div>
-                </div>
-                <div className="metric-tile col-span-2">
-                    <div className="text-[0.7rem] text-slate-500 uppercase tracking-wider mb-1">Apparent Power</div>
-                    <div className="text-2xl font-bold font-mono leading-none text-violet-400">
-                        {power}<span className="text-sm font-normal text-slate-400 ml-0.5">VA</span>
+                    <div className="text-[0.6rem] text-slate-500 font-semibold uppercase tracking-wider mb-1">Current</div>
+                    <div className={`text-xl font-bold font-mono leading-none ${currentAlert ? 'text-rose-400' : 'text-slate-200'}`}>
+                        {current}<span className="text-xs font-normal text-slate-600 ml-0.5">A</span>
                     </div>
                 </div>
             </div>
 
-            {/* Timestamp */}
-            <div className="text-xs text-slate-500 flex items-center gap-1.5">
-                🕐 {data?.receivedAt
-                    ? new Date(data.receivedAt).toLocaleTimeString()
-                    : data?.timestamp || coordState?.lastUpdate || 'No data yet'}
+            {/* Footer */}
+            <div className="flex justify-between items-end mt-auto pt-2 border-t border-white/[0.03]">
+                <div className="text-[0.6rem] text-slate-600 font-mono">
+                    ID: {labels.vIn}
+                </div>
+                <div className="text-[0.6rem] text-slate-500 font-mono">
+                    {data?.receivedAt
+                        ? new Date(data.receivedAt).toLocaleTimeString([], { hour12: false })
+                        : 'WAITING'}
+                </div>
             </div>
         </div>
     );

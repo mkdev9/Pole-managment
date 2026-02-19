@@ -53,55 +53,49 @@ function PoleNode({ poleId, state, isGrid }) {
     if (isGrid) {
         const isDown = state?.status === 'GRID_DOWN';
         return (
-            <div className="flex flex-col items-center gap-1 min-w-[56px]">
-                <div className={`w-11 h-11 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center text-lg font-bold border-2 transition-all duration-300 ${isDown
-                    ? 'bg-red-500/20 border-red-500/50'
-                    : 'bg-emerald-500/20 border-emerald-500/50'
+            <div className="flex flex-col items-center gap-2 min-w-[60px]">
+                <div className={`w-12 h-12 rounded-2xl flex items-center justify-center text-xl shadow-lg transition-all duration-300 ${isDown
+                    ? 'bg-rose-500/10 border border-rose-500/30 text-rose-500 shadow-rose-900/20'
+                    : 'bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 shadow-emerald-900/20'
                     }`}>
-                    🔌
+                    ⚡
                 </div>
-                <span className="text-[0.65rem] font-bold text-slate-300 uppercase">Grid</span>
-                <span className={`text-[0.5rem] font-bold px-1.5 py-0.5 rounded-full ${isDown ? 'bg-red-500/15 text-red-400' : 'bg-emerald-500/15 text-emerald-400'}`}>
-                    {isDown ? '⛔ DOWN' : '● LIVE'}
-                </span>
+                <div className="flex flex-col items-center">
+                    <span className="text-[0.65rem] font-bold text-slate-400 uppercase tracking-widest">Grid</span>
+                    <span className={`text-[0.55rem] font-bold px-2 py-0.5 rounded-full mt-1 ${isDown ? 'bg-rose-500/20 text-rose-300' : 'bg-emerald-500/20 text-emerald-300'}`}>
+                        {isDown ? 'OFFLINE' : 'ONLINE'}
+                    </span>
+                </div>
             </div>
         );
     }
 
     const nodeState = state?.nodeState || 'OFFLINE';
 
-    const stateColors = {
-        NORMAL: 'border-emerald-500/50 bg-emerald-500/10',
-        GRID_DOWN: 'border-amber-500/50 bg-amber-500/10',
-        FAULT_UPSTREAM: 'border-rose-500/50 bg-rose-500/10',
-        FAULT_DOWNSTREAM: 'border-orange-500/50 bg-orange-500/10',
-        RECOVERY: 'border-blue-500/50 bg-blue-500/10',
-        OFFLINE: 'border-slate-600/50 bg-slate-600/10',
-        WAITING: 'border-slate-600/50 bg-slate-600/10',
-        SIM_IDLE: 'border-violet-600/50 bg-violet-600/10',
-        SIM_NORMAL: 'border-violet-600/50 bg-violet-600/10',
-        UNKNOWN: 'border-slate-600/50 bg-slate-600/10',
-    };
-
-    const stateTextColors = {
-        NORMAL: 'text-emerald-400',
-        GRID_DOWN: 'text-amber-400',
-        FAULT_UPSTREAM: 'text-rose-400',
-        FAULT_DOWNSTREAM: 'text-orange-400',
-        RECOVERY: 'text-blue-400',
-        OFFLINE: 'text-slate-500',
-        UNKNOWN: 'text-slate-500',
+    const stateStyles = {
+        NORMAL: 'border-emerald-500/40 bg-emerald-500/10 text-emerald-400 shadow-[0_0_15px_rgba(16,185,129,0.15)]',
+        GRID_DOWN: 'border-amber-500/40 bg-amber-500/10 text-amber-400 shadow-[0_0_15px_rgba(245,158,11,0.15)]',
+        FAULT_UPSTREAM: 'border-rose-500/40 bg-rose-500/10 text-rose-400 shadow-[0_0_15px_rgba(244,63,94,0.15)]',
+        FAULT_DOWNSTREAM: 'border-orange-500/40 bg-orange-500/10 text-orange-400 shadow-[0_0_15px_rgba(249,115,22,0.15)]',
+        RECOVERY: 'border-blue-500/40 bg-blue-500/10 text-blue-400 shadow-[0_0_15px_rgba(59,130,246,0.15)]',
+        OFFLINE: 'border-slate-600/40 bg-slate-600/10 text-slate-500',
+        WAITING: 'border-slate-600/40 bg-slate-600/10 text-slate-500',
+        SIM_IDLE: 'border-violet-500/40 bg-violet-500/10 text-violet-400 shadow-[0_0_15px_rgba(139,92,246,0.15)]',
+        SIM_NORMAL: 'border-violet-500/40 bg-violet-500/10 text-violet-400 shadow-[0_0_15px_rgba(139,92,246,0.15)]',
+        UNKNOWN: 'border-slate-600/40 bg-slate-600/10 text-slate-500',
     };
 
     return (
-        <div className="flex flex-col items-center gap-1 min-w-[56px]">
-            <div className={`w-11 h-11 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center text-lg font-bold border-2 transition-all duration-300 ${stateColors[nodeState] || stateColors.OFFLINE}`}>
+        <div className="flex flex-col items-center gap-2 min-w-[60px]">
+            <div className={`w-12 h-12 rounded-2xl flex items-center justify-center text-lg font-bold border transition-all duration-300 ${stateStyles[nodeState] || stateStyles.OFFLINE}`}>
                 🏗️
             </div>
-            <span className="text-[0.65rem] font-bold text-slate-300">{poleId}</span>
-            <span className={`text-[0.5rem] font-bold ${stateTextColors[nodeState] || 'text-slate-500'}`}>
-                {nodeState}
-            </span>
+            <div className="flex flex-col items-center">
+                <span className="text-[0.65rem] font-bold text-slate-400 uppercase tracking-widest">{poleId}</span>
+                <span className={`text-[0.55rem] font-bold mt-0.5 ${nodeState.includes('FAULT') ? 'text-rose-400' : 'text-slate-500'}`}>
+                    {nodeState.replace('_', ' ')}
+                </span>
+            </div>
         </div>
     );
 }
@@ -122,38 +116,56 @@ function SensorDetailCard({ poleId, state, sensorData }) {
     };
     const codes = sensorCodes[poleId];
 
-    const Dot = ({ isHigh }) => (
-        <span className={`inline-block w-1.5 h-1.5 rounded-full flex-shrink-0 ${isHigh ? 'bg-emerald-400' : 'bg-slate-600'}`} />
+    const Dot = ({ isActive, color }) => (
+        <span className={`inline-block w-1.5 h-1.5 rounded-full flex-shrink-0 ${isActive ? color : 'bg-slate-700'}`} />
     );
 
-    const Row = ({ label, isHigh }) => (
-        <div className="flex items-center justify-between py-0.5">
-            <span className="text-slate-400 font-medium">{label}</span>
-            <span className="flex items-center gap-1">
-                <Dot isHigh={isHigh} />
-                <span className={`font-bold ${isHigh ? 'text-emerald-400' : 'text-slate-500'}`}>
-                    {isHigh ? 'HIGH' : 'LOW'}
+    const Row = ({ label, isActive, activeColor = 'text-emerald-400', activeDot = 'bg-emerald-400' }) => (
+        <div className="flex items-center justify-between py-1">
+            <span className="text-slate-500 font-medium">{label}</span>
+            <span className="flex items-center gap-1.5">
+                <Dot isActive={isActive} color={activeDot} />
+                <span className={`font-bold ${isActive ? activeColor : 'text-slate-600'}`}>
+                    {isActive ? 'HIGH' : 'LOW'}
+                </span>
+            </span>
+        </div>
+    );
+
+    // Relay Row specifically
+    const RelayRow = ({ label, isOpen }) => (
+        <div className="flex items-center justify-between py-1">
+            <span className="text-slate-500 font-medium">{label}</span>
+            <span className="flex items-center gap-1.5">
+                <Dot isActive={isOpen} color="bg-blue-400" />
+                <span className={`font-bold ${isOpen ? 'text-blue-400' : 'text-slate-600'}`}>
+                    {isOpen ? 'OPEN' : 'CLOSED'}
                 </span>
             </span>
         </div>
     );
 
     return (
-        <div className="bg-white/[0.02] border border-white/[0.06] rounded-xl px-3 py-2.5 hover:bg-white/[0.04] transition-colors">
-            <div className="text-[0.65rem] font-bold text-slate-300 mb-2 flex items-center justify-between border-b border-white/[0.05] pb-1.5">
-                <span>🏗️ {poleId}</span>
-                {isTerminal && <span className="text-[0.5rem] bg-slate-500/20 text-slate-400 px-1.5 py-0.5 rounded-md">TERMINAL</span>}
+        <div className="metric-tile hover:bg-white/[0.03] transition-colors p-3">
+            <div className="flex items-center justify-between mb-3 pb-2 border-b border-white/[0.04]">
+                <div className="flex items-center gap-1.5">
+                    <span className="text-sm">🏗️</span>
+                    <span className="text-xs font-bold text-slate-300 uppercase tracking-widest">{poleId}</span>
+                </div>
+                {isTerminal && <span className="text-[0.5rem] bg-slate-700/30 text-slate-400 px-1.5 py-0.5 rounded uppercase font-bold tracking-wider">Terminal</span>}
             </div>
-            <div className="space-y-0.5 text-[0.6rem]">
-                <Row label={codes.vIn} isHigh={vHigh} />
-                <Row label={codes.cIn} isHigh={inCurrent === 'HIGH'} />
+
+            <div className="space-y-0.5 text-[0.65rem]">
+                <Row label={codes.vIn} isActive={vHigh} />
+                <Row label={codes.cIn} isActive={inCurrent === 'HIGH'} />
+
                 {!isTerminal && (
                     <>
-                        <Row label={codes.vOut} isHigh={vHigh && outCurrent === 'HIGH'} />
-                        <Row label={codes.cOut} isHigh={outCurrent === 'HIGH'} />
-                        <div className="border-t border-white/[0.05] my-1" />
-                        <Row label={codes.rIn} isHigh={state?.relayIn === 'ON'} />
-                        <Row label={codes.rOut} isHigh={state?.relayOut === 'ON'} />
+                        <Row label={codes.vOut} isActive={vHigh && outCurrent === 'HIGH'} />
+                        <Row label={codes.cOut} isActive={outCurrent === 'HIGH'} />
+                        <div className="my-2 border-t border-dashed border-white/[0.05]"></div>
+                        <RelayRow label={codes.rIn} isOpen={state?.relayIn === 'ON'} />
+                        <RelayRow label={codes.rOut} isOpen={state?.relayOut === 'ON'} />
                     </>
                 )}
             </div>
@@ -170,25 +182,25 @@ function TopologyView({ systemState, poleCoordStates, polesData }) {
     const faultLocation = systemState?.faultLocation;
 
     const bannerConfig = {
-        NORMAL: { bg: 'bg-emerald-500/10 border-emerald-500/30', text: 'text-emerald-400', icon: '✅', label: 'All poles energized — system operating normally' },
-        FAULT: { bg: 'bg-rose-500/10 border-rose-500/30', text: 'text-rose-400', icon: '🚨', label: `Wire fault detected between ${faultLocation ? faultLocation.replace('-', ' → ') : 'poles'} — relays isolating` },
-        GRID_DOWN: { bg: 'bg-amber-500/10 border-amber-500/30', text: 'text-amber-400', icon: '⚠️', label: 'Grid power supply offline — all poles de-energized' },
-        WAITING: { bg: 'bg-slate-500/10 border-slate-500/30', text: 'text-slate-400', icon: '⏳', label: 'Waiting for hardware connection...' },
-        SIM_IDLE: { bg: 'bg-violet-500/10 border-violet-500/30', text: 'text-violet-400', icon: '🎮', label: 'Simulator Ready — Press Start to begin' },
-        SIM_NORMAL: { bg: 'bg-violet-500/10 border-violet-500/30', text: 'text-violet-400', icon: '🎮', label: 'Power line is nominal' },
+        NORMAL: { bg: 'bg-emerald-500/[0.08] border-emerald-500/20', text: 'text-emerald-400', icon: '✅', label: 'All poles energized — system operating normally' },
+        FAULT: { bg: 'bg-rose-500/[0.08] border-rose-500/20', text: 'text-rose-400', icon: '🚨', label: `Wire fault detected between ${faultLocation ? faultLocation.replace('-', ' → ') : 'poles'} — relays isolating` },
+        GRID_DOWN: { bg: 'bg-amber-500/[0.08] border-amber-500/20', text: 'text-amber-400', icon: '⚠️', label: 'Grid power supply offline — all poles de-energized' },
+        WAITING: { bg: 'bg-slate-500/[0.08] border-slate-500/20', text: 'text-slate-400', icon: '⏳', label: 'Waiting for hardware connection...' },
+        SIM_IDLE: { bg: 'bg-violet-500/[0.08] border-violet-500/20', text: 'text-violet-400', icon: '🎮', label: 'Simulator Ready — Press Start to begin' },
+        SIM_NORMAL: { bg: 'bg-violet-500/[0.08] border-violet-500/20', text: 'text-violet-400', icon: '🎮', label: 'Power line simulation running nominal' },
     };
     const banner = bannerConfig[status] || bannerConfig.NORMAL;
 
     return (
         <div className="glass-card mb-8">
             {/* System State Banner */}
-            <div className={`flex items-center justify-center gap-3 px-4 py-3 rounded-xl border mb-5 ${banner.bg}`}>
+            <div className={`flex items-center justify-center gap-3 px-6 py-4 rounded-xl border mb-8 ${banner.bg}`}>
                 <span className="text-xl">{banner.icon}</span>
-                <span className={`text-sm font-bold uppercase tracking-wider ${banner.text}`}>
+                <span className={`text-sm font-bold uppercase tracking-widest ${banner.text}`}>
                     {banner.label}
                 </span>
                 {status === 'FAULT' && (
-                    <span className="relative flex h-3 w-3 ml-1">
+                    <span className="relative flex h-3 w-3 ml-2">
                         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-500 opacity-75"></span>
                         <span className="inline-flex rounded-full h-3 w-3 bg-rose-500"></span>
                     </span>
@@ -196,7 +208,7 @@ function TopologyView({ systemState, poleCoordStates, polesData }) {
             </div>
 
             {/* ── Topology Line — clean, compact ──────── */}
-            <div className="flex items-center gap-2 sm:gap-3 px-2 overflow-x-auto py-2 justify-center">
+            <div className="flex items-start gap-0 sm:gap-2 px-4 overflow-x-auto py-4 justify-center min-h-[140px]">
                 <PoleNode isGrid={true} state={systemState} />
 
                 <WireSegment
@@ -228,7 +240,7 @@ function TopologyView({ systemState, poleCoordStates, polesData }) {
             </div>
 
             {/* ── Sensor & Relay Detail Grid ──────────── */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-5 px-1">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-8">
                 {POLE_ORDER.map(poleId => {
                     const pState = poleCoordStates?.[poleId] || systemState?.poles?.[poleId];
                     return (
@@ -243,18 +255,18 @@ function TopologyView({ systemState, poleCoordStates, polesData }) {
             </div>
 
             {/* Legend */}
-            <div className="flex justify-center gap-4 mt-4 text-[0.6rem] text-slate-500">
-                <span className="flex items-center gap-1">
-                    <span className="w-3 h-1 rounded-full bg-emerald-500 inline-block"></span> Healthy
+            <div className="flex justify-center gap-6 mt-6 pb-2 text-[0.6rem] text-slate-500 uppercase tracking-widest font-bold">
+                <span className="flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-emerald-500 shadow shadow-emerald-500/50"></span> Healthy
                 </span>
-                <span className="flex items-center gap-1">
-                    <span className="w-3 h-1 rounded-full bg-rose-500 inline-block"></span> Fault
+                <span className="flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-rose-500 shadow shadow-rose-500/50"></span> Fault
                 </span>
-                <span className="flex items-center gap-1">
-                    <span className="w-3 h-1 rounded-full bg-slate-600 inline-block"></span> Isolated
+                <span className="flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-slate-600"></span> Isolated
                 </span>
-                <span className="flex items-center gap-1">
-                    <span className="w-3 h-1 rounded-full bg-amber-500 inline-block"></span> No Power
+                <span className="flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-amber-500 shadow shadow-amber-500/50"></span> Grid Off
                 </span>
             </div>
         </div>
