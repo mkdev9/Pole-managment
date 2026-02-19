@@ -35,7 +35,7 @@ class SimSystem {
         this.lastUpdateTime = { Pole1: 0, Pole2: 0, Pole3: 0, Pole4: 0 };
 
         this.systemState = {
-            status: 'WAITING',
+            status: 'SIM_IDLE',
             faultLocation: null,
             faultType: null,
             lastFaultTime: null,
@@ -118,7 +118,7 @@ class SimSystem {
         this.poleStates = { Pole1: null, Pole2: null, Pole3: null, Pole4: null };
         this.pendingCommands = { Pole1: [], Pole2: [], Pole3: [], Pole4: [] };
         this.systemState = {
-            status: 'WAITING',
+            status: 'SIM_IDLE',
             faultLocation: null,
             faultType: null,
             lastFaultTime: null,
@@ -167,7 +167,7 @@ class SimSystem {
             }
 
             if (anyWentStale && !anyActive) {
-                console.log(`🔄 [SIM] All data sources inactive — resetting system state to WAITING`);
+                console.log(`🔄 [SIM] All data sources inactive — resetting system state to SIM_IDLE`);
                 this.reset();
             } else if (anyWentStale && this.io) {
                 this.io.emit(this.events.update, this.getSummary());
