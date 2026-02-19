@@ -91,6 +91,23 @@ router.post('/data', async (req, res) => {
                 await db.ref(`simulation/poles/${poleId}/readings`).push(record);
                 await db.ref(`simulation/poles/${poleId}/latest`).set(record);
             }
+
+            // Restore Socket Emission for Dashboard/Charts
+            const io = req.app.get('io');
+            if (io) {
+                io.emit('simPoleData', {
+                    poleId,
+                    data: {
+                        poleId,
+                        voltage: parseFloat(voltage),
+                        current: parseFloat(current),
+                        status,
+                        timestamp: timestamp || new Date().toISOString(),
+                        alert: status === 'alert'
+                    }
+                });
+            }
+
             return res.json({ success: true, mode: 'SIM_LOGGING_ONLY' });
         }
 

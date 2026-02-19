@@ -476,7 +476,7 @@ function App() {
                     {/* Charts */}
                     <section>
                         <h2 className="text-xl font-bold text-slate-100 text-center mb-6">
-                            📊 Trends ({isSimView ? 'Simulation' : 'Live'})
+                            📊 Power Usage Live Analytics ({isSimView ? 'Simulation' : 'Live'})
                         </h2>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                             {POLE_IDS.map(poleId => (
