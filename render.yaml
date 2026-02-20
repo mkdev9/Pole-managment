@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: utility-pole-monitor-backend
+    env: node
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_VERSION
+        value: 18.20.2
+      - key: FRONTEND_URL
+        sync: false
+      - key: FIREBASE_SERVICE_ACCOUNT
+        sync: false
+      - key: FIREBASE_DATABASE_URL
+        sync: false
