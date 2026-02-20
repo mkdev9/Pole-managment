@@ -53,6 +53,7 @@ const allowedOrigins = [
     'http://localhost:5173',           // Vite dev server
     'http://localhost:3000',           // CRA dev server
     'http://localhost:3001',           // Alternative port
+    'https://pole-managment.vercel.app', // Production frontend
     ...envOrigins,                     // Production frontend URLs
 ].filter(Boolean);
 
