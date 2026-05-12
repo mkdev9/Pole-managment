@@ -50,7 +50,3 @@ The system follows a linear topology:
 `Grid → Pole 1 → Pole 2 → Pole 3 → Pole 4 (Terminal Node)`
 
 All nodes publish status to the cloud, forming a "digital twin" that the fault engine uses to identify the exact location of faults even without direct wired communication between poles.
-
-## ⚖ License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
